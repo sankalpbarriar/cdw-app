@@ -1,0 +1,12 @@
+//when anyone see a classfield we can store that in DB and can also increment the views in the cars
+model PageView {
+    id Int @id @default(autoincrement())
+    path String
+    viewdAt DateTime @default(now()) @map("viewd_at")
+    ipAddress String?
+    userAgent String?
+    referrer String?
+
+    @@index([path,viewdAt])
+    @@map("page_view")
+}

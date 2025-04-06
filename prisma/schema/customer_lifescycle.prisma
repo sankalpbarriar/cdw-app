@@ -1,0 +1,12 @@
+model CustomerLifeCycle {
+    id Int @id @default(autoincrement())
+    customerId Int @map("customer_id")
+    customer Customer @relation(fields: [customerId],references: [id],onDelete: Cascade)
+    oldStatus CustomerStatus @map("old_status")
+    newStatus CustomerStatus @map("new_status")
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([customerId])
+    @@map("customer_lifecycle")
+}

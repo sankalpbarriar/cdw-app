@@ -1,0 +1,88 @@
+model Classified {
+    id             Int              @id @default(autoincrement())
+    views          Int              @default(0)
+    slug           String           @unique
+    vrm            String?
+    title          String?
+    description    String?
+    year           Int
+    odoReading     Int              @default(0) @map("odo_reading")
+    doors          Int              @default(2)
+    seats          Int              @default(5)
+    price          Int              @default(0) @map("price")
+    makeId         Int              @map("make_id")
+    make           Make             @relation(fields: [makeId], references: [id])
+    modelId        Int              @map("model_id")
+    model          Model            @relation(fields: [modelId], references: [id])
+    modelVariantId Int              @map("model_variant_id")
+    modelVariant   ModelVariant     @relation(fields: [modelVariantId], references: [id])
+    ulezComplaince ULEZComplaince   @default(EXEMPT)
+    transmission   Transmission     @default(MANUAL)
+    colour         Colour           @default(BLACK)
+    fuelType       FuelType         @default(PETROL)
+    bodyType       BodyType         @default(SEDAN)
+    odoUnit        OdoUnit          @default(MILES)
+    currency       CurrencyCode     @default(INR)
+    status         ClassifiedStatus @default(LIVE)
+    images         Image[]
+    customers      Customer[]
+    created_at     DateTime         @default(now()) @map("created_at")
+    updated_at     DateTime         @updatedAt @map("updated_at")
+
+    @@index([makeId, modelId], name: "index_make_model")
+    @@index([status], name: "index_status")
+    @@index([price], name: "index_price")
+    @@map("classifieds")
+}
+
+enum ULEZComplaince {
+    EXEMPT
+    NON_EXEMPT
+}
+
+enum Transmission {
+    MANUAL
+    AUTOMATIC
+}
+
+enum OdoUnit {
+    KILOMETER
+    MILES
+}
+
+enum Colour {
+    RED
+    GREEN
+    BLUE
+    BLACK
+    WHITE
+    PURPLE
+}
+
+enum FuelType {
+    PETROL
+    DIESEL
+    ELECTRIC
+}
+
+enum BodyType {
+    SEDAN
+    HATCHBACK
+    SUV
+    COUPE
+    WAGON
+    MINIVAN
+    TRUCK
+    CABRIOLET
+}
+
+enum CurrencyCode {
+    INR
+    USD
+}
+
+enum ClassifiedStatus {
+    LIVE
+    DRAFT
+    SOLD
+}

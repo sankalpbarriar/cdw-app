@@ -1,37 +1,40 @@
 model Make {
-    id          Int          @id @default(autoincrement())
-    name        String       @unique
-    image       String
-    model       Model[]
-    classifieds Classified[]
-    createdAt   DateTime     @default(now()) @map("created_at")
-    updatedAt   DateTime     @updatedAt @map("updated_at")
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  image       String
+  models      Model[]
+  classifieds Classified[]
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+
+  @@map("makes")
 }
 
 model Model {
-    id Int @id @default(autoincrement())
-    name String @unique
-    makeId Int @map("make_id")
-    make Make @relation(fields: [makeId],references: [id],onDelete: Cascade)
-    modelVariants ModelVariant[]
-    classifieds Classified[]
-    createdAt   DateTime     @default(now()) @map("created_at")
-    updatedAt   DateTime     @updatedAt @map("updated_at")
-    @@unique([makeId,name])
-    @@map("models")
+  id            Int            @id @default(autoincrement())
+  name          String
+  makeId        Int            @map("make_id")
+  make          Make           @relation(fields: [makeId], references: [id], onDelete: Cascade)
+  modelVariants ModelVariant[]
+  classifieds   Classified[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  @@unique([makeId, name])
+  @@map("models")
 }
 
-model ModelVariant{
-   id Int @id @default(autoincrement())
-   name String
-   modelId Int @map("model_id")
-   yearStart  Int
-   yearEnd Int
-   mode Model @relation(fields: [modelId],references: [id],onDelete: Cascade)
-   classifieds Classified[]
-   createdAt   DateTime     @default(now()) @map("created_at")
-   updatedAt   DateTime     @updatedAt @map("updated_at")
+model ModelVariant {
+  id          Int          @id @default(autoincrement())
+  name        String
+  modelId     Int          @map("model_id")
+  yearStart   Int
+  yearEnd     Int
+  model       Model        @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  classifieds Classified[]
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
 
-   @@unique([modelId,name])
-   @@map("model_variants")
+  @@unique([modelId, name])
+  @@map("model_variants")
 }

@@ -11,6 +11,7 @@
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
     "@prisma/client": "^6.5.0",
+    "@radix-ui/react-select": "^2.2.2",
     "@radix-ui/react-slot": "^1.2.0",
     "@t3-oss/env-nextjs": "^0.12.0",
     "@tinymce/tinymce-react": "^6.1.0",
@@ -20,6 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "csv": "^6.3.11",
+    "debounce": "^2.2.0",
     "framer-motion": "^12.7.4",
     "html-react-parser": "^5.2.3",
     "ky": "^1.8.1",

@@ -9,13 +9,27 @@ import { parseAsString, useQueryStates } from "nuqs";
 import { ChangeEvent, useEffect, useState } from "react";
 import { SearchInput } from "./search-input";
 import { TaxonomyFilter } from "./taxonomy-filters";
+import { RangeFilter } from "./range-filter";
+import { Prisma } from "@prisma/client";
 
 interface SidebarProps extends AwaitedPageProps {
-    minMaxValues: any,
+    minMaxValues: Prisma.GetClassifiedAggregateType<{
+        _min: {
+            year: true,
+            price: true,
+            odoReading: true,
+        };
+        _max: {
+            year: true,
+            odoReading: true,
+            price: true,
+        };
+    }>;
 }
 export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
     const router = useRouter();
     const [filterCount, setFilterCount] = useState(0);
+    const { _min, _max } = minMaxValues;
 
     //Instead of using useState() to store data only in memory, useQueryState() persists that state in the URL, making it shareable, bookmarkable, and browser navigation-friendly.
     const [querState, setQuerStates] = useQueryStates({
@@ -71,6 +85,7 @@ export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
         router.refresh();
     };
 
+    console.log({ _min, _max });
 
     return (
         <div className="py-4 w-[21.25rem] text-black bg-white border-r border-muted block">
@@ -95,6 +110,40 @@ export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
             {/* taxnomy filters */}
             <div className="p-4 space-y-2">
                 <TaxonomyFilter searchParams={searchParams} handleChange={handleChange} />
+                <RangeFilter
+                    label="Year"
+                    minName="minYear"
+                    maxName="maxYear"
+                    defaultMin={_min.year || 1925}
+                    defaultMax={_max.year || new Date().getFullYear()}
+                    handleChange={handleChange}
+                    searchParams={searchParams}
+                />
+                <RangeFilter
+                    label="Price"
+                    minName="minPrice"
+                    maxName="maxPrice"
+                    defaultMin={_min.price || 0}
+                    defaultMax={_max.price || 21475643}
+                    handleChange={handleChange}
+                    searchParams={searchParams}
+                    increment={100000}
+                    thousandSeparator
+                    currency={{
+                        currencyCode: "INR", 
+                    }}
+                />
+                <RangeFilter
+                    label="Odometer Reading"
+                    minName="minReading"
+                    maxName="maxReading"
+                    defaultMin={_min.odoReading || 0}
+                    defaultMax={_max.odoReading || 100000}
+                    handleChange={handleChange}
+                    searchParams={searchParams}
+                    increment={1000}
+                    thousandSeparator
+                />
             </div>
         </div>
     )

@@ -1,38 +1,24 @@
 'use client';
 
 import { routes } from "@/config/routes";
-import { AwaitedPageProps } from "@/config/types";
+import { AwaitedPageProps, SidebarProps } from "@/config/types";
 import { env } from "@/env";
-import { cn } from "@/lib/utils";
+import { cn, formatBodyType, formatColour, formatFuelType, formatTransmission, odoUnitFormat } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { parseAsString, useQueryStates } from "nuqs";
 import { ChangeEvent, useEffect, useState } from "react";
 import { SearchInput } from "./search-input";
 import { TaxonomyFilter } from "./taxonomy-filters";
 import { RangeFilter } from "./range-filter";
-import { Prisma } from "@prisma/client";
-
-interface SidebarProps extends AwaitedPageProps {
-    minMaxValues: Prisma.GetClassifiedAggregateType<{
-        _min: {
-            year: true,
-            price: true,
-            odoReading: true,
-        };
-        _max: {
-            year: true,
-            odoReading: true,
-            price: true,
-        };
-    }>;
-}
+import { BodyType, Colour, CurrencyCode, FuelType, OdoUnit, Prisma, Transmission } from "@prisma/client";
+import { Select } from "../ui/select";
 export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
     const router = useRouter();
     const [filterCount, setFilterCount] = useState(0);
     const { _min, _max } = minMaxValues;
 
     //Instead of using useState() to store data only in memory, useQueryState() persists that state in the URL, making it shareable, bookmarkable, and browser navigation-friendly.
-    const [querState, setQuerStates] = useQueryStates({
+    const [queryStates, setQueryStates] = useQueryStates({
         make: parseAsString.withDefault(""),
         model: parseAsString.withDefault(""),
         modelVariant: parseAsString.withDefault(""),
@@ -44,6 +30,7 @@ export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
         maxReading: parseAsString.withDefault(""),
         currency: parseAsString.withDefault(""),
         transmission: parseAsString.withDefault(""),
+        odoUnit: parseAsString.withDefault(""),
         fuelType: parseAsString.withDefault(""),
         bodyType: parseAsString.withDefault(""),
         colour: parseAsString.withDefault(""),
@@ -72,12 +59,12 @@ export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
         e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
     ) => {
         const { name, value } = e.target;
-        setQuerStates({
+        setQueryStates({
             [name]: value || null
         })
 
         if (name === "make") {
-            setQuerStates({
+            setQueryStates({
                 model: null,
                 modelVariant: null,
             })
@@ -85,10 +72,10 @@ export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
         router.refresh();
     };
 
-    console.log({ _min, _max });
+    // console.log({ _min, _max });
 
     return (
-        <div className="py-4 w-[21.25rem] text-black bg-white border-r border-muted block">
+        <div className="py-4 w-[21.25rem] text-black bg-white border-r border-muted hidden lg:block">
             <div>
                 <div className="text-lg font-semibold flex justify-between px-4">
                     <span>Filters</span>
@@ -130,7 +117,7 @@ export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
                     increment={100000}
                     thousandSeparator
                     currency={{
-                        currencyCode: "INR", 
+                        currencyCode: "INR",
                     }}
                 />
                 <RangeFilter
@@ -144,6 +131,96 @@ export const Sidebar = ({ minMaxValues, searchParams }: SidebarProps) => {
                     increment={1000}
                     thousandSeparator
                 />
+                <Select
+                    label="Currency"
+                    name="currency"
+                    value={queryStates.currency || ""}
+                    onChange={handleChange}
+                    options={Object.values(CurrencyCode).map((value) => (
+                        {
+                            label: value,
+                            value,
+                        }
+                    ))} />
+                <Select
+                    label="Odometer Unit"
+                    name="odoUnit"
+                    value={queryStates.odoUnit || ""}
+                    onChange={handleChange}
+                    options={Object.values(OdoUnit).map((value) => (
+                        {
+                            label: odoUnitFormat(value), //format odoUnit
+                            value,
+                        }
+                    ))} />
+                <Select
+                    label="Transmission"
+                    name="transmission"
+                    value={queryStates.transmission || ""}
+                    onChange={handleChange}
+                    options={Object.values(Transmission).map((value) => (
+                        {
+                            label: formatTransmission(value), //format odoUnit
+                            value,
+                        }
+                    ))} />
+                <Select
+                    label="Fuel Type"
+                    name="fuelType"
+                    value={queryStates.fuelType || ""}
+                    onChange={handleChange}
+                    options={Object.values(FuelType).map((value) => (
+                        {
+                            label: formatFuelType(value), //format odoUnit
+                            value,
+                        }
+                    ))} />
+                <Select
+                    label="Body Type"
+                    name="bpdyType"
+                    value={queryStates.bodyType || ""}
+                    onChange={handleChange}
+                    options={Object.values(BodyType).map((value) => (
+                        {
+                            label: formatBodyType(value),
+                            value,
+                        }
+                    ))} />
+                <Select
+                    label="Colour"
+                    name="colour"
+                    value={queryStates.colour || ""}
+                    onChange={handleChange}
+                    options={Object.values(Colour).map((value) => (
+                        {
+                            label: formatColour(value),
+                            value,
+                        }
+                    ))} />
+                <Select
+                    label="Doors"
+                    name="doors"
+                    value={queryStates.doors || ""}
+                    onChange={handleChange}
+                    options={Array.from({ length: 6 }).map((_, i) => {
+                        return {
+                            label: Number(i + 1).toString(),
+                            value: Number(i + 1).toString(),
+                        }
+                    })}
+                />
+                <Select
+                    label="Seats"
+                    name="seats"
+                    value={queryStates.seats || ""}
+                    onChange={handleChange}
+                    options={Array.from({ length: 8 }).map((_, i) => {
+                        return {
+                            label: Number(i + 1).toString(),
+                            value: Number(i + 1).toString(),
+                        }
+                    })} />
+
             </div>
         </div>
     )

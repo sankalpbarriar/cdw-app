@@ -1,4 +1,5 @@
 import { ClassifiedList } from "@/components/inventory/classified-list";
+import { DialogFilters } from "@/components/inventory/dialog-filters";
 import { Sidebar } from "@/components/inventory/sidebar";
 import { CustomPagination } from "@/components/shared/custom-pagination";
 import { CLASSIFIED_PER_PAGE } from "@/config/constants";
@@ -55,12 +56,22 @@ const buildClassifiedFilterQuery = (searchParams: AwaitedPageProps['searchParams
         maxReading: "odoReading",
     }
 
+    const numFilters = ["seats", "doors"];
+
+    const enumFilters = ["odoUnit", "currency", "bodyType", "fuelType", "transmission", "colour"];
+
     const mapParamsToField = keys.reduce((acc, key) => {
         const value = searchParams?.[key] as string | undefined;
         if (!value) return acc;
 
         if (taxonomyFilters.includes(key)) {
             acc[key] = { id: Number(value) }
+        }
+        else if (enumFilters.includes(key)) {
+            acc[key] = value.toUpperCase();
+        }
+        else if (numFilters.includes(key)) {
+            acc[key] = Number(value);
         }
         else if (key in rangeFilter) {
             const field = rangeFilter[key as keyof typeof rangeFilter];
@@ -161,21 +172,35 @@ export default async function InventoryPage(props: PageProps) {
                         <h2 className="text-sm mg:text-base lg:text-xl text-gray-600 font-semibold min-w-fit">
                             We have found {count} clasifieds
                         </h2>
-                        {/* <DialogFilters/> */}
+                        <DialogFilters minMaxValues={minMaxResult} count={count} searchParams={searchParams} />
                     </div>
                     <CustomPagination
                         baseURL={routes.inventory}
                         totalPages={totalPages}
                         styles={{
-                            paginationRoot: "xl:flex justify-end",
+                            paginationRoot: "justify-end hidden lg:flex",
                             paginationPrevious: "",
                             paginationNext: "",
                             paginationLinkActive: "",
-                            paginationLink: "border-none active:border"
+                            paginationLink: "border-none active:border tex-black"
                         }}
                     />
-                    <ClassifiedList classifieds={classifieds} favourites={favourites ? favourites.ids : []} />
                 </div>
+                <ClassifiedList
+                    classifieds={classifieds}
+                    favourites={favourites ? favourites.ids : []}
+                />
+                <CustomPagination
+                    baseURL={routes.inventory}
+                    totalPages={totalPages}
+                    styles={{
+                        paginationRoot: "justify-center lg:hidden pt-12",
+                        paginationPrevious: "",
+                        paginationNext: "",
+                        paginationLinkActive: "",
+                        paginationLink: "border-none active:border"
+                    }}
+                />
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import { Colour, CurrencyCode, FuelType, OdoUnit, Transmission } from "@prisma/client";
+import { BodyType, Colour, CurrencyCode, FuelType, OdoUnit, Transmission } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -70,5 +70,28 @@ export function formatColour(colour: Colour) {
           return "White"
       default:
           return "unknown"
+  }
+}
+
+export function formatBodyType(bodyType: BodyType) {
+  switch (bodyType) {
+    case BodyType.CABRIOLET:
+      return "Cabriolet";
+    case BodyType.SEDAN:
+      return "Sedan";
+    case BodyType.SUV:
+      return "SUV";
+    case BodyType.HATCHBACK:
+      return "Hatchback";
+    case BodyType.MINIVAN:
+      return "Minivan";
+    case BodyType.COUPE:
+      return "Coupe";
+    case BodyType.WAGON:
+      return "Wagon";
+    case BodyType.TRUCK:
+      return "Truck";
+    default:
+      return "Unknown";
   }
 }

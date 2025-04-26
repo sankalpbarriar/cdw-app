@@ -81,7 +81,7 @@ export const ClassifiedCard = (props: ClassifiedCardProps) => {
                             isFavourite={isFavourite}
                             id={classified.id} />
                         <div className="absolute top-2.5 right-3.5 bg-primary text-slate-50 font-bold px-2 py-1 rounded">
-                            <p className="text-x5 lg:text-base xl:text-lg font-semibold">
+                            <p className="text-xs lg:text-base xl:text-lg font-semibold">
                                 {formatPrice({price:classified.price,currency:classified.currency})}</p>
                         </div>
                     </div>

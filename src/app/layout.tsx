@@ -3,7 +3,7 @@ import "./globals.css";
 import { Mulish, Roboto } from 'next/font/google'
 import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
-  title: "cdw 🚘 ",
+  title: "Velocity Motors 🚘 ",
   description: "A car dealer website with AI 🚗",
 };
 import { Toaster } from "@/components/ui/sonner";

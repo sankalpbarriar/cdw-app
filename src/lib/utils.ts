@@ -38,7 +38,7 @@ export function odoUnitFormat(
 }
 
 export function formatTransmission(transmission: Transmission) {
-  return transmission === Transmission.AUTOMATIC ? "Automatic" : "Manual";
+  return transmission === Transmission.AUTOMATIC ? "Auto" : "Manual";
 }
 
 export function formatFuelType(fuelType: FuelType) {

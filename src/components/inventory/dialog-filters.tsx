@@ -19,7 +19,6 @@ interface DialogFilterProps extends SidebarProps {
     count: number;
 }
 
-
 export const DialogFilters = (props: DialogFilterProps) => {
     const { minMaxValues, searchParams, count } = props;
 
@@ -98,7 +97,6 @@ export const DialogFilters = (props: DialogFilterProps) => {
                         <div className="text-lg font-semibold flex justify-between px-4">
                             <span>Filters</span>
                             <DialogTitle>
-                                Filters
                             </DialogTitle>
                         </div>
                         <div className="mt-2" />
@@ -243,7 +241,11 @@ export const DialogFilters = (props: DialogFilterProps) => {
                                 type="button"
                                 variant="outline"
                                 onClick={clearFilters}
-                                aria-disabled={!filterCount} className={cn("text-sm py-1", !filterCount ? "disabled opacity-50 pointer-events-none cursor-default" : "hover : underline")}>
+                                aria-disabled={!filterCount}
+                                className={cn(
+                                    "text-sm py-1", !filterCount ? "disabled opacity-50 pointer-events-none cursor-default" : "hover : underline",
+                                )}
+                            >
                                 Clear All {filterCount ? `(${filterCount})` : null}
                             </Button>
                         )}

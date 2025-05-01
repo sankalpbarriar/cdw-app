@@ -1,7 +1,7 @@
 import { routes } from "./routes";
 
 export const imageSource = {
-    classifiedPlaceholder:"https://i.ibb.co/WvPk2kqp/Adobe-Stock-855683950.jpg",
+    classifiedPlaceholder:"https://velocity-motors.s3.eu-north-1.amazonaws.com/uploads/AdobeStock_855683950.jpeg",
 };
 
 export const CLASSIFIED_PER_PAGE = 3;

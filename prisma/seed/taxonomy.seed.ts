@@ -75,24 +75,24 @@ export async function seedTaxonomy(prisma: PrismaClient) {
 
   const makePromises = Object.entries(result).map(([name]) => {
     return prisma.make.upsert({
-      //if exist update else create ==> upsert
       where: {
         name,
       },
       update: {
         name,
-        image: `https://vl.imaix.net/img/${name
+        image: `https://vl.imgix.net/img/${name
           .replace(/\s+/g, "-")
           .toLowerCase()}-logo.png?auto=format,compress`,
       },
       create: {
         name,
-        image: `https://vl.imaix.net/img/${name
+        image: `https://vl.imgix.net/img/${name
           .replace(/\s+/g, "-")
           .toLowerCase()}-logo.png?auto=format,compress`,
       },
     });
   });
+  
   const makes = await Promise.all(makePromises);
   console.log(`Seeded DB with ${makes.length} makes 🌱`);
 

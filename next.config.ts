@@ -1,9 +1,24 @@
 import type { NextConfig } from "next";
-import { hostname } from "os";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [{ hostname: "*" }],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "vl.imgix.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "velocity-motors.imgix.net",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.ibb.co",
+        pathname: "/**",
+      },
+    ],
   },
 };
 

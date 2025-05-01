@@ -2,6 +2,9 @@ import { routes } from "./routes";
 
 export const imageSource = {
     classifiedPlaceholder:"https://velocity-motors.s3.eu-north-1.amazonaws.com/uploads/AdobeStock_855683950.jpeg",
+
+    carLinup : "https://velocity-motors.s3.eu-north-1.amazonaws.com/uploads/home.jpeg",
+    featureSection:"https://velocity-motors.s3.eu-north-1.amazonaws.com/uploads/home2.jpeg"
 };
 
 export const CLASSIFIED_PER_PAGE = 3;

@@ -31,7 +31,6 @@ export const SearchButton = ({ count }: { count: number }) => {
     const url = new URL(routes.inventory, env.NEXT_PUBLIC_APP_URL);
     url.search = queryParams.toString();
 
-
     return (
         <Button className="w-full" asChild>
             <Link href={url.toString()}

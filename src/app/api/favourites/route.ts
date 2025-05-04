@@ -1,3 +1,4 @@
+import { validateIdSchema } from "@/app/schemas/id.schema";
 import { routes } from "@/config/routes";
 import { Favourites } from "@/config/types";
 import { redis } from "@/lib/redis-store";
@@ -6,7 +7,6 @@ import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { date, z } from "zod";
 
-const validateIdSchema = z.object({ id: z.number().int() });
 export const POST = async (req: NextRequest) => {
   const body = await req.json();
 

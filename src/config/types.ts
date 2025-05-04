@@ -53,3 +53,9 @@ export interface SidebarProps extends AwaitedPageProps {
         };
     }>;
 }
+
+export interface MultiStepFormComponentProps extends AwaitedPageProps{
+  classified:Prisma.ClassifiedGetPayload<{
+      include:{make:true}
+  }>
+}

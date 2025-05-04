@@ -84,7 +84,7 @@ export const PublicFooter = () => {
             </div>
             <div className="container mx-auto mt-8 text-center text-gray-700">
                 <h4 className="text-lg font-bold text-primary">Company Info</h4>
-                <p>Company No. 123456789 | GST No. GB123456789</p>
+                <p>Company No. 123456789 | GST No. IN123456789</p>
                 <p>
                     Velocity Motors is not authorised and not regulated by the Financial
                     Conduct Authority

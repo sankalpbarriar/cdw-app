@@ -54,7 +54,7 @@ export const NewsLetterForm = () => {
     return (
         <div className="space-y-4">
             <h3 className="text-xl font-bold text-primary">
-                Subscribe to out inventory updates
+                Subscribe to our inventory updates
             </h3>
             <p className="text-gray-700">
                 Enter your details to recieve new stock updates

@@ -1,7 +1,17 @@
 import { ClassifiedFilterSchema } from "@/app/schemas/classified.schema";
 import { AwaitedPageProps } from "@/config/types";
-import { BodyType, ClassifiedStatus, Colour, CurrencyCode, FuelType, OdoUnit, Prisma, Transmission } from "@prisma/client";
+import {
+  BodyType,
+  ClassifiedStatus,
+  Colour,
+  CurrencyCode,
+  FuelType,
+  OdoUnit,
+  Prisma,
+  Transmission,
+} from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
+import { format, parse } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -33,9 +43,7 @@ export function formatNumber(
   return new Intl.NumberFormat("en-IN", options).format(num);
 }
 
-export function odoUnitFormat(
-  odoUnit: OdoUnit,
-) {
+export function odoUnitFormat(odoUnit: OdoUnit) {
   return odoUnit === OdoUnit.MILES ? "mi" : "km";
 }
 
@@ -45,33 +53,33 @@ export function formatTransmission(transmission: Transmission) {
 
 export function formatFuelType(fuelType: FuelType) {
   switch (fuelType) {
-      case FuelType.PETROL:
-          return "Petrol"
-      case FuelType.DIESEL:
-          return "Deisel"
-      case FuelType.ELECTRIC:
-          return "Electric"
-      default:
-          return "unknown"
+    case FuelType.PETROL:
+      return "Petrol";
+    case FuelType.DIESEL:
+      return "Deisel";
+    case FuelType.ELECTRIC:
+      return "Electric";
+    default:
+      return "unknown";
   }
 }
 
 export function formatColour(colour: Colour) {
   switch (colour) {
-      case Colour.BLACK:
-          return "Black"
-      case Colour.BLUE:
-          return "Blue"
-      case Colour.GREEN:
-          return "Green"
-      case Colour.PURPLE:
-          return "Purple"
-      case Colour.RED:
-          return "Red"
-      case Colour.WHITE:
-          return "White"
-      default:
-          return "unknown"
+    case Colour.BLACK:
+      return "Black";
+    case Colour.BLUE:
+      return "Blue";
+    case Colour.GREEN:
+      return "Green";
+    case Colour.PURPLE:
+      return "Purple";
+    case Colour.RED:
+      return "Red";
+    case Colour.WHITE:
+      return "White";
+    default:
+      return "unknown";
   }
 }
 
@@ -98,81 +106,132 @@ export function formatBodyType(bodyType: BodyType) {
   }
 }
 
-export const buildClassifiedFilterQuery = (searchParams: AwaitedPageProps['searchParams'] | undefined,)
-    : Prisma.ClassifiedWhereInput => {
-    const { data } = ClassifiedFilterSchema.safeParse(searchParams);
-    if (!data) return { status: ClassifiedStatus.LIVE };
+export const buildClassifiedFilterQuery = (
+  searchParams: AwaitedPageProps["searchParams"] | undefined
+): Prisma.ClassifiedWhereInput => {
+  const { data } = ClassifiedFilterSchema.safeParse(searchParams);
+  if (!data) return { status: ClassifiedStatus.LIVE };
 
-    const keys = Object.keys(data);
+  const keys = Object.keys(data);
 
-    const taxonomyFilters = ["make", "model", "modelVarinat"];
+  const taxonomyFilters = ["make", "model", "modelVarinat"];
 
-    const rangeFilter = {
-        minYear: "year",
-        maxYear: "year",
-        minPrice: "price",
-        maxPrice: "price",
-        minReading: "odoReading",
-        maxReading: "odoReading",
+  const rangeFilter = {
+    minYear: "year",
+    maxYear: "year",
+    minPrice: "price",
+    maxPrice: "price",
+    minReading: "odoReading",
+    maxReading: "odoReading",
+  };
+
+  const numFilters = ["seats", "doors"];
+
+  const enumFilters = [
+    "odoUnit",
+    "currency",
+    "bodyType",
+    "fuelType",
+    "transmission",
+    "colour",
+  ];
+
+  const mapParamsToField = keys.reduce((acc, key) => {
+    const value = searchParams?.[key] as string | undefined;
+    if (!value) return acc;
+
+    if (taxonomyFilters.includes(key)) {
+      acc[key] = { id: Number(value) };
+    } else if (enumFilters.includes(key)) {
+      acc[key] = value.toUpperCase();
+    } else if (numFilters.includes(key)) {
+      acc[key] = Number(value);
+    } else if (key in rangeFilter) {
+      const field = rangeFilter[key as keyof typeof rangeFilter];
+      acc[field] = acc[field] || {};
+      if (key.startsWith("min")) {
+        acc[field].gte = Number(value);
+      } else {
+        if (key.startsWith("max")) {
+          acc[field].lte = Number(value);
+        }
+      }
     }
 
-    const numFilters = ["seats", "doors"];
+    return acc;
+  }, {} as { [key: string]: any });
 
-    const enumFilters = ["odoUnit", "currency", "bodyType", "fuelType", "transmission", "colour"];
+  console.log({ mapParamsToField });
 
-    const mapParamsToField = keys.reduce((acc, key) => {
-        const value = searchParams?.[key] as string | undefined;
-        if (!value) return acc;
+  return {
+    status: ClassifiedStatus.LIVE,
 
-        if (taxonomyFilters.includes(key)) {
-            acc[key] = { id: Number(value) }
-        }
-        else if (enumFilters.includes(key)) {
-            acc[key] = value.toUpperCase();
-        }
-        else if (numFilters.includes(key)) {
-            acc[key] = Number(value);
-        }
-        else if (key in rangeFilter) {
-            const field = rangeFilter[key as keyof typeof rangeFilter];
-            acc[field] = acc[field] || {};
-            if (key.startsWith("min")) {
-                acc[field].gte = Number(value);
-            }
-            else {
-                if (key.startsWith("max")) {
-                    acc[field].lte = Number(value);
-                }
-            }
-        }
+    ...(searchParams?.q && {
+      OR: [
+        {
+          title: {
+            contains: searchParams.q as string,
+            mode: "insensitive",
+          },
+        },
+        {
+          description: {
+            contains: searchParams.q as string,
+            mode: "insensitive",
+          },
+        },
+      ],
+    }),
 
-        return acc;
-    }, {} as { [key: string]: any }
-    );
+    ...mapParamsToField,
+  };
+};
 
-    console.log({ mapParamsToField })
+export const generateTimeOptions = () => {
+  const times = [];
+  const startHour = 8;
+  const endHour = 18;
 
-    return {
-        status: ClassifiedStatus.LIVE,
+  for (let hour = startHour; hour < endHour; hour++) {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    date.setHours(hour);
+    date.setMinutes(0);
 
-        ...(searchParams?.q && {
-            OR: [
-                {
-                    title: {
-                        contains: searchParams.q as string,
-                        mode: "insensitive",
-                    }
-                },
-                {
-                    description: {
-                        contains: searchParams.q as string,
-                        mode: "insensitive",
-                    }
-                }
-            ]
-        }),
+    const formattedTime = date.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
-        ...mapParamsToField,
-    }
-}
+    times.push({
+      label: formattedTime,
+      value: formattedTime,
+    });
+  }
+  return times;
+};
 
+export const generateDateOptions = () => {
+  const today = new Date();
+  const dates = [];
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    dates.push({
+      label: format(date, "dd-MMM-yyyy"),
+      value: format(date, "dd-MMM-yyyy"),
+    });
+  }
+  return dates;
+};
+
+export const formatDate = (date: string, time: string) => {
+  const parsedDate = parse(date, "dd-MMM-yyyy", new Date());
+  const parsedTime = parse(time, "hh:mm aa", new Date());
+
+  parsedDate.setHours(parsedTime.getHours(), parsedTime.getMinutes(), 0, 0);
+
+  return parsedDate;
+};

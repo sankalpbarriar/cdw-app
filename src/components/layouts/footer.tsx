@@ -72,7 +72,7 @@ export const PublicFooter = () => {
                     ))}
                     <li>
                         <Link
-                            href={routes.home}
+                            href={routes.signIn}
                             className="text-foreground hover:text-primary"
                         >
                             Admin

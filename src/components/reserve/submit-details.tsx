@@ -85,16 +85,16 @@ export const SubmitDetails = (props: MultiStepFormComponentProps) => {
             if (!success) {
                 toast(
                     <div>
-                      <strong>Error</strong>
-                      <p>{message}</p>
+                      <strong className="text-red-600">Error</strong>
+                      <p className="text-black">{message}</p>
                     </div>
                   );
                   return;             
             }
             toast(
                 <div>
-                  <strong>Success</strong>
-                  <p>{message}</p>
+                  <strong className="text-green-400">Success</strong>
+                  <p className="text-black">{message}</p>
                 </div>
               );
 

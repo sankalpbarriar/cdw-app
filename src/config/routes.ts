@@ -11,4 +11,7 @@ export const routes = {
   success: (slug: string) => `/inventory/${slug}/success`,
   signIn: "/auth/sign-in",
   challenge: "/auth/challenge",
+  admin: {
+    dashboard: "/admin/dashboard",
+  },
 };

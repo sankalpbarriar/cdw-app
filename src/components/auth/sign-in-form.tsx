@@ -8,7 +8,7 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { useFormStatus } from "react-dom"
 import { CircleCheckIcon, CircleX, Loader2 } from "lucide-react"
-import { SignInAction } from "@/app/_actions/sign-in"
+import { signInAction } from "@/app/_actions/sign-in"
 
 const SubmitButton = () => {
     const { pending } = useFormStatus();
@@ -25,7 +25,7 @@ const SubmitButton = () => {
     )
 }
 export const SignInForm = () => {
-    const [state, formAction] = useActionState(SignInAction, {
+    const [state, formAction] = useActionState(signInAction, {
         success: false,
         message: ""
     })

@@ -7,6 +7,8 @@ import { bcryptPasswordCompare } from "@/lib/bcrypt";
 import { SESSION_MAX_AGE } from "@/config/constants";
 import { routes } from "@/config/routes";
 import { SignInSchema } from "@/app/schemas/auth.schema";
+import { issueChallenge } from "@/lib/opt";
+import { AdapterUser } from "@auth/core/adapters";
 
 export const config = {
   adapter: PrismaAdapter(prisma),
@@ -36,7 +38,7 @@ export const config = {
 
           const user = await prisma.user.findUnique({
             where: { email: validatedField.data.email },
-            select: { id: true, hashedPassword: true },
+            select: { id: true, email: true, hashedPassword: true },
           });
 
           if (!user) return null;
@@ -47,12 +49,20 @@ export const config = {
           );
 
           console.log({
-            hashedPassword:user.hashedPassword,
-            password:validatedField.data.password
-          })
+            hashedPassword: user.hashedPassword,
+            password: validatedField.data.password,
+          });
           if (!match) return null;
 
           //issue a challenge
+          await issueChallenge(user.id, user.email);
+
+          const dbUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            omit: { hashedPassword: true },
+          });
+
+
           return { ...user, requires2FA: true };
         } catch (error) {
           console.log(error);
@@ -89,12 +99,9 @@ export const config = {
     },
 
     async session({ session, user }) {
-      const newSession = {
-        user,
-        requires2FA: true,
-        expires: session.expires,
-      };
-      return newSession;
+      
+      session.user = {} as AdapterUser
+      return session;
     },
   },
   jwt: {

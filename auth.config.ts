@@ -100,7 +100,10 @@ export const config = {
 
     async session({ session, user }) {
       
-      session.user = {} as AdapterUser
+      session.user = {
+        id:session.userId,
+        email:user.email
+      } as AdapterUser
       return session;
     },
   },

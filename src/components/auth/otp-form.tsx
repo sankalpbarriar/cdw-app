@@ -29,7 +29,7 @@ export const OtpForm = () => {
                 toast(
                     <div>
                         <strong className="text-red-600">Error</strong>
-                        <p className="text-black">result.message</p>
+                        <p className="text-black">{result.message}</p>
                     </div>
                 );
             }

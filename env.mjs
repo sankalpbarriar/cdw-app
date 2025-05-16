@@ -12,6 +12,7 @@ export const env = createEnv({
     RESEND_API_KEY: z.string(),
     NEXTAUTH_SECRET: z.string(),
     FROM_EMAIL_ADDRESS:z.string(),
+    X_AUTH_TOKEN:z.string(),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string(),
@@ -29,5 +30,6 @@ export const env = createEnv({
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     FROM_EMAIL_ADDRESS: process.env.FROM_EMAIL_ADDRESS,
+    X_AUTH_TOKEN : process.env.X_AUTH_TOKEN
   },
 });

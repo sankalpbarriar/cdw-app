@@ -27,9 +27,9 @@ function setRequestHeaders(requestHeaders: Headers) {
 export default auth((req) => {
   // console.log({user:req.auth})
   const nextUrl = req.nextUrl.clone();
-
   const requestHeaders = new Headers(req.headers);
   setRequestHeaders(requestHeaders);
+
   if (req.auth) {
     //it will always redirect to the challenge page until requires2FA is false
     if (req.auth.requires2FA) {
@@ -58,7 +58,11 @@ export default auth((req) => {
       return NextResponse.redirect(signInUrl);
     }
   }
-  return NextResponse.next();
+  return NextResponse.next({
+   request:{
+      headers:requestHeaders,
+   }
+  });
 });
 export const config = {
   //matcher explicitly ignores some of the paths

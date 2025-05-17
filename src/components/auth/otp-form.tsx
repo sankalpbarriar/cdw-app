@@ -10,6 +10,8 @@ import { OneTimePasswordInput } from "./otp-input";
 import { Loader2, RotateCw } from "lucide-react";
 import { completeChallengeAction, resendChallengeAction } from "@/app/_actions/challenge";
 import { toast } from "sonner";
+import { routes } from "@/config/routes";
+import { Button } from "../ui/button";
 
 export const OtpForm = () => {
     const [isCodePending, startCodeTransition] = useTransition();
@@ -34,7 +36,8 @@ export const OtpForm = () => {
                 );
             }
             else{
-                console.log("second: ",{result})
+                console.log("second: ",{result});
+                router.push(routes.admin.dashboard)
             }
         })
     }
@@ -99,6 +102,18 @@ export const OtpForm = () => {
                                 {isCodePending ? (<Loader2 className="w-6 h-6 text-secondary transition-colors duration-200 group-hover:text-primary animate-spin" />) : (<RotateCw className="w-6 h-6 text-secondary transition-colors duration-200 group-hover:text-primary" />)}
                                 {sendButtonText}
                             </button>
+                        </div>
+                        <div className="mt-6 flex w-full flex-col gap-4 md:mt-16">
+                            <Button className="flex w-full gap-x-2"
+                            disabled={isSubmitPending}
+                            >
+                                <span className="text-sm uppercase tracking-wider text-inherit">
+                                    {isSubmitPending ? "Verifying.." : "Verify"}
+                                </span>
+                                {isSubmitPending ? (
+                                    <Loader2 className="w-4 h-4 shrink-0 animate-spin"/>
+                                ):null}
+                            </Button>
                         </div>
                     </form>
                 </Form>

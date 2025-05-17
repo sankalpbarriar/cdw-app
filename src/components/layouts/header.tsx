@@ -20,13 +20,14 @@ export const PublicHeader = async () => {
         <header className="flex items-center justify-between h-16 px-4 bg-transparent gap-x-6">
             <div className="flex items-center flex-1">
                 <Link href={routes.home} className="flex items-center gap-2">
-                    <Image
-                        width={315}
-                        height={100}
-                        alt="logo"
-                        className="relative"
-                        src="/logo3.svg"
-                    />
+                    <div className="relative w-32 h-8 sm:w-40 sm:h-10 md:w-48 md:h-12 lg:w-60 lg:h-14 xl:w-72 xl:h-16">
+                        <Image
+                            src="/logo7.png"
+                            alt="logo"
+                            fill
+                            className="object-contain"
+                        />
+                    </div>
                 </Link>
             </div>
             <nav className="text-black hidden md:block">
@@ -39,10 +40,10 @@ export const PublicHeader = async () => {
             </nav>
             {session ? (
                 <div className="items-center md:flex gap-x-6 hidden">
-                  <Link href={routes.admin.dashboard} className="text-black">
-                  Backoffice
-                  </Link>
-                  <SignOutForm/>
+                    <Link href={routes.admin.dashboard} className="text-black">
+                        Backoffice
+                    </Link>
+                    <SignOutForm />
                 </div>
             ) : (
 

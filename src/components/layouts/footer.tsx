@@ -40,14 +40,16 @@ export const PublicFooter = () => {
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="flex flex-col space-x-2 gap-y-2">
                     <Link className="flex items-center" href={routes.home}>
-                        <Image
-                            width={300}
-                            height={100}
-                            alt="logo"
-                            className="h-8 relative"
-                            src="/logo-footer.svg"
-                        />
+                        <div className="relative w-40 h-10 md:w-60 md:h-14">
+                            <Image
+                                alt="logo"
+                                src="/logo7.png"
+                                fill
+                                className="object-contain"
+                            />
+                        </div>
                     </Link>
+
                     <div className="flex space-x-4">
                         {socialLinks.map((link) => {
                             return (

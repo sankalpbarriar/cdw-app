@@ -13,5 +13,8 @@ export const routes = {
   challenge: "/auth/challenge",
   admin: {
     dashboard: "/admin/dashboard",
+    classifieds:"/admin/classifieds",
+    customers:"/admin/customers",
+    settings:"/admin/settings",
   },
 };

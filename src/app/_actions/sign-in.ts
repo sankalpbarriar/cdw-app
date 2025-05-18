@@ -5,9 +5,12 @@ import { routes } from "@/config/routes";
 import type { PrevState } from "@/config/types";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { SignInSchema } from "../schemas/auth.schema";
+import { genericRateLimit } from "@/lib/rate-limiter";
 
 export const signInAction = async (_: PrevState, formData: FormData) => {
 	try {
+		const limmiterError = await genericRateLimit("login");
+		if(limmiterError) return limmiterError;
 		const email = formData.get("email") as string;
 		const password = formData.get("password") as string;
 

@@ -23,17 +23,17 @@ interface FormatPriceArgs {
   currency: CurrencyCode | null;
 }
 
-export function formatPrice({ price, currency }: FormatPriceArgs) {
-  if (!price) return "0";
+export function formatPrice({ price, currency }: { price: number; currency?: string }) {
   const formatter = new Intl.NumberFormat("en-IN", {
     style: "currency",
+    currency: currency || "INR",
     currencyDisplay: "symbol",
-    ...(currency && { currency }),
     maximumFractionDigits: 0,
   });
 
-  return formatter.format(price);
+  return formatter.format(price || 0);
 }
+
 
 export function formatNumber(
   num: number | null,
@@ -136,30 +136,33 @@ export const buildClassifiedFilterQuery = (
     "colour",
   ];
 
-  const mapParamsToField = keys.reduce((acc, key) => {
-    const value = searchParams?.[key] as string | undefined;
-    if (!value) return acc;
+  const mapParamsToField = keys.reduce(
+    (acc, key) => {
+      const value = searchParams?.[key] as string | undefined;
+      if (!value) return acc;
 
-    if (taxonomyFilters.includes(key)) {
-      acc[key] = { id: Number(value) };
-    } else if (enumFilters.includes(key)) {
-      acc[key] = value.toUpperCase();
-    } else if (numFilters.includes(key)) {
-      acc[key] = Number(value);
-    } else if (key in rangeFilter) {
-      const field = rangeFilter[key as keyof typeof rangeFilter];
-      acc[field] = acc[field] || {};
-      if (key.startsWith("min")) {
-        acc[field].gte = Number(value);
-      } else {
-        if (key.startsWith("max")) {
-          acc[field].lte = Number(value);
+      if (taxonomyFilters.includes(key)) {
+        acc[key] = { id: Number(value) };
+      } else if (enumFilters.includes(key)) {
+        acc[key] = value.toUpperCase();
+      } else if (numFilters.includes(key)) {
+        acc[key] = Number(value);
+      } else if (key in rangeFilter) {
+        const field = rangeFilter[key as keyof typeof rangeFilter];
+        acc[field] = acc[field] || {};
+        if (key.startsWith("min")) {
+          acc[field].gte = Number(value);
+        } else {
+          if (key.startsWith("max")) {
+            acc[field].lte = Number(value);
+          }
         }
       }
-    }
 
-    return acc;
-  }, {} as { [key: string]: any });
+      return acc;
+    },
+    {} as { [key: string]: any }
+  );
 
   console.log({ mapParamsToField });
 
@@ -235,3 +238,11 @@ export const formatDate = (date: string, time: string) => {
 
   return parsedDate;
 };
+
+export function calculatePercentageChange(current: number, previous: number) {
+  if (previous === 0) {
+    if (current === 0) return 0;
+    return current * 100;
+  }
+  return ((current - previous) / previous) * 100;
+}

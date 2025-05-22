@@ -52,6 +52,7 @@
     "react-email": "^4.0.13",
     "react-error-boundary": "^5.0.0",
     "react-hook-form": "^7.56.1",
+    "recharts": "^2.15.3",
     "resend": "^4.5.1",
     "sanitize-html": "^2.16.0",
     "shadcn": "^2.4.1",

@@ -1,3 +1,9 @@
-export default function ClassifiedsPage(){
-    return <p>Classifieds</p>
+import { AdminClassifiedHeader } from "@/components/admin/classified/classified-headers";
+import { PageProps } from "@/config/types";
+
+export default async function ClassifiedsPage(props:PageProps){
+    const searchParams = await props.searchParams;
+    return (
+        <AdminClassifiedHeader searchParams={searchParams}/>
+    )
 }

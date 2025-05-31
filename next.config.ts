@@ -30,6 +30,11 @@ const nextConfig: NextConfig = {
         hostname: "i.ibb.co",
         pathname: "/**",
       },
+      {
+        protocol: 'https',
+        hostname: 'velocity-motors.s3.eu-north-1.amazonaws.com',
+        pathname: '/**',
+      },
     ],
   },
 

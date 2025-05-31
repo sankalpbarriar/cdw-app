@@ -1,4 +1,5 @@
 import { ClassifiedFilterSchema } from "@/app/schemas/classified.schema";
+import prettyBytes from "pretty-bytes";
 import { AwaitedPageProps } from "@/config/types";
 import {
   BodyType,
@@ -9,6 +10,7 @@ import {
   OdoUnit,
   Prisma,
   Transmission,
+  ULEZCompliance,
 } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
 import { format, parse } from "date-fns";
@@ -229,6 +231,10 @@ export const generateDateOptions = () => {
   }
   return dates;
 };
+export function formatUlezCompliance(ulezCompliance: ULEZCompliance) {
+	return ulezCompliance === ULEZCompliance.EXEMPT ? "Exempt" : "Non-Exempt";
+}
+
 
 export const formatDate = (date: string, time: string) => {
   const parsedDate = parse(date, "dd-MMM-yyyy", new Date());
@@ -245,4 +251,12 @@ export function calculatePercentageChange(current: number, previous: number) {
     return current * 100;
   }
   return ((current - previous) / previous) * 100;
+}
+
+export const convertToMb = (bytes:number)=>{
+  return prettyBytes(bytes,{
+    bits:false,
+    maximumFractionDigits:1,
+    space:false
+  })
 }

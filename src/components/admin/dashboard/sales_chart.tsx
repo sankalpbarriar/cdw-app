@@ -34,14 +34,13 @@ export const SalesChart = (props: SalesChartProps) => {
                             tickLine={false}
                         />
                         <YAxis
-  stroke="#888888"
-  fontSize={12}
-  axisLine={false}
-  tickLine={false}
-  tickFormatter={(value) => value.toLocaleString("en-IN")}
-  width={100}
-/>
-
+                            stroke="#888888"
+                            fontSize={12}
+                            axisLine={false}
+                            tickLine={false}
+                            tickFormatter={(value) => value.toLocaleString("en-IN")}
+                            width={100}
+                        />
 
                         <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
                         <Bar dataKey='sales'

@@ -139,8 +139,6 @@ async function getDashboardData() {
     };
 }
 
-// Move interface and function outside getDashboardData
-
 async function getChartData() {
     const now = new Date();
     const monthsData = [];

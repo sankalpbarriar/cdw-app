@@ -114,16 +114,16 @@ async function getDashboardData() {
 
     const salesPercentageChange = calculatePercentageChange(totalSales, previousTotalSales);
 
-    console.log({ totalSales, previousTotalSales, salesPercentageChange })
+    // console.log({ totalSales, previousTotalSales, salesPercentageChange })
 
     const carsSoldPercentageChange = calculatePercentageChange(carsSoldThisMonth, carsSoldLastMonth);
 
     const newCustomerPercetageChange = calculatePercentageChange(newCustomersThisMonth, newCustomersLastMonth);
 
     // const purchaseCustomerPercentageChange = calculatePercentageChange(purchasedCustomerThisMonth, purchasedCustomersLastMonth);
-    console.log({ carsSoldThisMonth, carsSoldLastMonth, carsSoldPercentageChange })
+    // console.log({ carsSoldThisMonth, carsSoldLastMonth, carsSoldPercentageChange })
 
-    console.log({ newCustomersLastMonth, newCustomersThisMonth, newCustomerPercetageChange })
+    // console.log({ newCustomersLastMonth, newCustomersThisMonth, newCustomerPercetageChange })
 
     return {
         conversionRates,
@@ -172,7 +172,7 @@ export type ChartDataType = ReturnType<typeof getChartData>;
 export default async function AdminDashboardPage() {
     const dashboardData = getDashboardData();
     const chartData = getChartData()
-    console.log({ dashboardData })
+    // console.log({ dashboardData })
     return (
         <>
             <KPICards data={dashboardData} />

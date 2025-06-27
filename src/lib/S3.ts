@@ -6,6 +6,7 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 
+require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 
 const credentials = new Credentials({
   accessKeyId: env.S3_BUCKET_ACCESS_KEY,

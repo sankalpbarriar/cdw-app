@@ -1,3 +1,4 @@
+import { UpdateClassifedType } from "@/app/schemas/classified.schema";
 import { Prisma } from "@prisma/client";
 import { ChangeEvent } from "react";
 
@@ -65,3 +66,13 @@ export interface MultiStepFormComponentProps extends AwaitedPageProps {
     include: { make: true };
   }>;
 }
+
+export interface ProgressArgs{
+    sent:number;
+    total:number;
+    uuid:string;
+    percentage:number;
+    key?:string;
+}
+
+export type ClassifiedImages = UpdateClassifedType['images'];

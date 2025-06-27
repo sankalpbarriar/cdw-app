@@ -7,9 +7,10 @@ import { SwiperSlide } from "swiper/react";
 import { ClassifiedCard } from "../inventory/classified-card";
 import { SwiperButtons } from "../shared/swiper-buttons";
 import "swiper/css"
+import { ClassifiedWithImages } from "@/config/types";
 
 interface CarouselProps {
-    classifieds: Prisma.ClassifiedGetPayload<{ include: { images: true } }>[];
+    classifieds: ClassifiedWithImages[];
     favourites: number[];
 };
 const Swiper = dynamic(() => import("swiper/react").then((mod) => mod.Swiper), {

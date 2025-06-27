@@ -25,7 +25,13 @@ interface FormatPriceArgs {
   currency: CurrencyCode | null;
 }
 
-export function formatPrice({ price, currency }: { price: number; currency?: string }) {
+export function formatPrice({
+  price,
+  currency,
+}: {
+  price: number;
+  currency?: string;
+}) {
   const formatter = new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: currency || "INR",
@@ -35,7 +41,6 @@ export function formatPrice({ price, currency }: { price: number; currency?: str
 
   return formatter.format(price || 0);
 }
-
 
 export function formatNumber(
   num: number | null,
@@ -232,9 +237,8 @@ export const generateDateOptions = () => {
   return dates;
 };
 export function formatUlezCompliance(ulezCompliance: ULEZCompliance) {
-	return ulezCompliance === ULEZCompliance.EXEMPT ? "Exempt" : "Non-Exempt";
+  return ulezCompliance === ULEZCompliance.EXEMPT ? "Exempt" : "Non-Exempt";
 }
-
 
 export const formatDate = (date: string, time: string) => {
   const parsedDate = parse(date, "dd-MMM-yyyy", new Date());
@@ -253,10 +257,30 @@ export function calculatePercentageChange(current: number, previous: number) {
   return ((current - previous) / previous) * 100;
 }
 
-export const convertToMb = (bytes:number)=>{
-  return prettyBytes(bytes,{
-    bits:false,
-    maximumFractionDigits:1,
-    space:false
-  })
+export const convertToMb = (bytes: number) => {
+  return prettyBytes(bytes, {
+    bits: false,
+    maximumFractionDigits: 1,
+    space: false,
+  });
+};
+
+export function generateYaars(minYear: number, maxYear?: number): string[] {
+  const currentYear = maxYear ? maxYear : new Date().getFullYear();
+  const years: string[] = [];
+  for (let year = currentYear; year >= minYear; year--) {
+    years.push(`${year}`);
+  }
+  return years;
+}
+
+export function formatClassifiedStatus(status: ClassifiedStatus) {
+  switch (status) {
+    case ClassifiedStatus.LIVE:
+      return "Live";
+    case ClassifiedStatus.SOLD:
+      return "Sold";
+    case ClassifiedStatus.DRAFT:
+      return "Draft";
+  }
 }

@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import { auth } from "@/auth";
 import { StreamableSkeletonProps } from "@/components/admin/classified/streambale-skeloton";
@@ -8,9 +8,10 @@ import { generateThumHashFromSrcUrl } from "@/lib/thumhash-sever";
 import { CurrencyCode } from "@prisma/client";
 import { randomInt } from "crypto";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { forbidden, redirect } from "next/navigation";
 import slugify from "slugify";
 import { createPngDataUri } from "unlazy/thumbhash";
+import { UpdateClassifedType } from "../schemas/classified.schema";
 
 export const createClassifiedAction = async (data: StreamableSkeletonProps) => {
   const session = await auth();
@@ -122,9 +123,121 @@ export const createClassifiedAction = async (data: StreamableSkeletonProps) => {
   if (success && classifiedId) {
     console.log("♻️ Revalidating path:", routes.admin.classifieds);
     revalidatePath(routes.admin.classifieds);
-    console.log("🚀 Redirecting to edit page:", routes.admin.editClassified(classifiedId));
+    console.log(
+      "🚀 Redirecting to edit page:",
+      routes.admin.editClassified(classifiedId)
+    );
     redirect(routes.admin.editClassified(classifiedId));
   } else {
     return { success: false, message: "Failed to create classified" };
   }
 };
+
+export const updateClassifiedAction = async (data: UpdateClassifedType) => {
+  const session = await auth();
+  if (!session) forbidden();
+
+  let success = false;
+
+  try {
+    const makeId = Number(data.make);
+    const modelId = Number(data.model);
+    const modelVariantId = data.modelVariant ? Number(data.modelVariant) : null;
+
+    const make = await prisma.make.findUnique({ where: { id: makeId } });
+    const model = await prisma.model.findUnique({ where: { id: modelId } });
+
+    let title = `${data.year} ${make?.name} ${model?.name}`;
+
+    if (modelVariantId) {
+      const modelVariant = await prisma.modelVariant.findUnique({
+        where: { id: modelVariantId },
+      });
+
+      if (modelVariant) title += ` ${modelVariant.name}`;
+    }
+
+    const slug = slugify(`${title} ${data.vrm ?? ""}`);
+
+    // 🧪 Preprocess image data OUTSIDE transaction
+    // console.log("🎨 Preprocessing image thumbhashes...");
+    const imagesData = await Promise.all(
+      data.images.map(async ({ src }, index) => {
+        const hash = await generateThumHashFromSrcUrl(src);
+        const uri = createPngDataUri(hash);
+        return {
+          classifiedId: data.id,
+          isMain: index === 0,
+          blurhash: uri,
+          src,
+          alt: `${title} ${index + 1}`,
+        };
+      })
+    );
+
+    // console.log("🔁 Running Prisma transaction...");
+    const [classified, images] = await prisma.$transaction(
+      async (tx) => {
+        await tx.image.deleteMany({
+          where: { classifiedId: data.id },
+        });
+
+        const createdImages = await tx.image.createManyAndReturn({
+          data: imagesData,
+        });
+
+        const updatedClassified = await tx.classified.update({
+          where: { id: data.id },
+          data: {
+            slug,
+            title,
+            year: Number(data.year),
+            makeId,
+            modelId,
+            ...(modelVariantId && { modelVariantId }),
+            vrm: data.vrm,
+            price: data.price * 100,
+            currency: data.currency,
+            odoReading: data.odoReading,
+            odoUnit: data.odoUnit,
+            fuelType: data.fuelType,
+            bodyType: data.bodyType,
+            transmission: data.transmission,
+            colour: data.colour,
+            ulezCompliance: data.ulezCompliance,
+            description: data.description,
+            doors: data.doors,
+            seats: data.seats,
+            images: {
+              set: createdImages.map((image) => ({ id: image.id })),
+            },
+          },
+        });
+
+        return [updatedClassified, createdImages];
+      },
+      { timeout: 10000 }
+    );
+
+    if (classified && images) {
+      success = true;
+      // console.log("✅ Classified and images updated successfully.");
+    }
+  } catch (error) {
+    // console.error("❌ Error in updateClassifiedAction:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+
+  if (success) {
+    console.log("♻️ Revalidating path:", routes.admin.classifieds);
+    revalidatePath(routes.admin.classifieds);
+    console.log("🚀 Redirecting to classifieds list");
+    redirect(routes.admin.classifieds);
+  } else {
+    return { success: false, message: "Failed to update classifieds" };
+  }
+};
+

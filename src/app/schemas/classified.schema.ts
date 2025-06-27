@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BodyType, ClassifiedStatus, Colour, CurrencyCode, FuelType, OdoUnit, Transmission, ULEZCompliance } from "@prisma/client"
 
 export const ClassifiedFilterSchema = z.object({
 	q: z.string().optional(),
@@ -21,3 +22,39 @@ export const ClassifiedFilterSchema = z.object({
 	seats: z.string().optional(),
 	ulezCompliance: z.string().optional(),
 });
+
+export const updateClassifiedSchema = z.object({
+    id: z.number(),
+    year: z.string(),
+    make: z.string(),
+    model: z.string(),
+    modelVariant: z
+        .string()
+        .optional(),
+    description: z
+        .string(),
+    vrm: z
+        .string(),
+    odoReading: z.number(),
+    doors: z.number().min(1).max(8),
+    seats: z.number().min(1).max(12),
+    price:z.number(),
+    ulezCompliance: z.nativeEnum(ULEZCompliance, { message: "Invalid ULEZComplinace" }),
+    transmission: z.nativeEnum(Transmission, { message: "Invalid Transmission" }),
+    colour: z.nativeEnum(Colour, { message: "Invalid Colour" }),
+    fuelType: z.nativeEnum(FuelType, { message: "Invalid Fuel Type" }),
+    bodyType: z.nativeEnum(BodyType, { message: "Invalid Body Type" }),
+    odoUnit: z.nativeEnum(OdoUnit, { message: "Invalid Odo Unit" }),
+    currency:z.nativeEnum(CurrencyCode,{message:"INvalid Currency code"}),
+    status: z.nativeEnum(ClassifiedStatus),
+    images: z.array(z.object({
+        id: z.number().optional(),
+        src: z.string().url(),
+        alt: z.string(),
+        uuid: z.string().uuid().optional(),
+        base64: z.string().optional(),
+        done:z.boolean().optional(),
+    }))
+})
+
+export type UpdateClassifedType = z.infer<typeof updateClassifiedSchema>

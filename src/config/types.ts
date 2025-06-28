@@ -1,5 +1,5 @@
 import { UpdateClassifedType } from "@/app/schemas/classified.schema";
-import { Prisma } from "@prisma/client";
+import { Classified, Prisma } from "@prisma/client";
 import { ChangeEvent } from "react";
 
 type Params = {
@@ -67,12 +67,25 @@ export interface MultiStepFormComponentProps extends AwaitedPageProps {
   }>;
 }
 
-export interface ProgressArgs{
-    sent:number;
-    total:number;
-    uuid:string;
-    percentage:number;
-    key?:string;
+export interface ProgressArgs {
+  sent: number;
+  total: number;
+  uuid: string;
+  percentage: number;
+  key?: string;
 }
 
-export type ClassifiedImages = UpdateClassifedType['images'];
+export type ClassifiedImages = UpdateClassifedType["images"];
+
+export type ClassifiedKeys = keyof Pick<
+  Classified,
+  | "status"
+  | "title"
+  | "vrm"
+  | "id"
+  | "views"
+  | "year"
+  | "colour"
+  | "price"
+  | "created_at"
+>;

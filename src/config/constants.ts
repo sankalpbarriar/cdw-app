@@ -1,4 +1,6 @@
+import { BadgeProps } from "@/components/ui/badge";
 import { routes } from "./routes";
+import { ClassifiedStatus } from "@prisma/client";
 
 export const imageSource = {
   classifiedPlaceholder:
@@ -19,4 +21,13 @@ export const navLinks = [
 
 export const SESSION_MAX_AGE = 7 * 24 * 60 * 60 * 1000; //7 days in seconds -> seesion validity
 export const MAX_IMAGE_SIZE = 20 * 1000 * 1000; //2mb
-export const MAX_IMAGES = 20;
+export const MAX_IMAGES = 10;
+export const sortOrder = ["asc", "desc"] as const;
+export const ClassifiedBadgeMap: Record<
+  ClassifiedStatus,
+  BadgeProps["variant"]
+> = {
+  [ClassifiedStatus.DRAFT]: "secondary",
+  [ClassifiedStatus.LIVE]: "default",
+  [ClassifiedStatus.SOLD]: "destructive",
+};

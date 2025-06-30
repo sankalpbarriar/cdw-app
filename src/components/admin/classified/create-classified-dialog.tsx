@@ -73,8 +73,16 @@ export const CreateClassifiedDialog = () => {
             for await (const value of readStreamableValue(
                 responseMessage.classified,
             )) {
-                // @ts-nocheck
-                if (value) createForm.reset(value);
+                // Ensure no nulls for number fields
+                if (value) {
+                    const sanitizedValue = {
+                        ...value,
+                        modelId: value.modelId ?? undefined,
+                        makeId: value.makeId ?? undefined,
+                        year: value.year ?? undefined,
+                    };
+                    createForm.reset(sanitizedValue);
+                }
             }
         });
     };

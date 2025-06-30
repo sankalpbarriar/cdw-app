@@ -1,10 +1,15 @@
-import type NextAuth from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
 
 declare module "next-auth" {
-  interface User extends NextAuth.user {
+  interface User extends DefaultUser {
     requires2FA: boolean;
   }
-  interface Session extends NextAuthResult.Session {
-    requires2FA: true;
+
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+      email: string;
+      requires2FA: boolean;
+    };
   }
 }

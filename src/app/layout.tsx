@@ -11,7 +11,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 const mulish = Mulish({
-  weight: "variable",
+  weight: ["400", "700"],
   subsets: ['latin'],
   variable: "--font-heading",
   display: "swap"

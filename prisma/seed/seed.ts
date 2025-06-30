@@ -12,8 +12,8 @@ async function main() {
   // await seedTaxonomy(prisma);
   // await seedClassifieds(prisma);
   // await seedImages(prisma);
-  // await seedAdmin(prisma);
-  await seedCustomers(prisma);
+  await seedAdmin(prisma);
+  // await seedCustomers(prisma);
 }
 
 main()

@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
   },
   experimental:{
     authInterrupts:true,
-    nodeMiddleware:true,
     optimizeCss:true,
     optimisticClientCache:true,
     optimizePackageImports:["lucide-react","date-fns"],

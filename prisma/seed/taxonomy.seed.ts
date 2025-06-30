@@ -92,7 +92,7 @@ export async function seedTaxonomy(prisma: PrismaClient) {
       },
     });
   });
-  
+
   const makes = await Promise.all(makePromises);
   console.log(`Seeded DB with ${makes.length} makes 🌱`);
 
@@ -149,9 +149,16 @@ export async function seedTaxonomy(prisma: PrismaClient) {
     });
 
     for (const model of models) {
-      for (const [variant, year_range] of Object.entries(
-        result[make.name][model.name].variants
-      )) {
+      const modelData = result[make.name]?.[model.name];
+
+      if (!modelData) {
+        console.warn(
+          `Skipping variant seed for make: ${make.name}, model: ${model.name} (not in CSV data)`
+        );
+        continue;
+      }
+
+      for (const [variant, year_range] of Object.entries(modelData.variants)) {
         variantPromises.push(
           prisma.modelVariant.upsert({
             where: {

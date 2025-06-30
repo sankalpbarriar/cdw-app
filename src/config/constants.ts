@@ -1,6 +1,6 @@
 import { BadgeProps } from "@/components/ui/badge";
 import { routes } from "./routes";
-import { ClassifiedStatus } from "@prisma/client";
+import { ClassifiedStatus, CustomerStatus } from "@prisma/client";
 
 export const imageSource = {
   classifiedPlaceholder:
@@ -30,4 +30,14 @@ export const ClassifiedBadgeMap: Record<
   [ClassifiedStatus.DRAFT]: "secondary",
   [ClassifiedStatus.LIVE]: "default",
   [ClassifiedStatus.SOLD]: "destructive",
+};
+export const CustomerBadgeMap: Record<
+  CustomerStatus,
+  BadgeProps["variant"]
+> = {
+  [CustomerStatus.COLD]: "secondary",
+  [CustomerStatus.CONTACTED]: "default",
+  [CustomerStatus.INTERESTED]: "destructive",
+  [CustomerStatus.PURCHASED]: "warning",
+  [CustomerStatus.SUBSCRIBER]: "info",
 };

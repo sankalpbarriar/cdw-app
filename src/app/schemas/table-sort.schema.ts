@@ -10,12 +10,12 @@ export const CustomersTableSortSchema = z.object({
 			"firstName",
 			"lastName",
 			"updatedAt",
-			"created_at",
+			"createdAt",
 			"status",
 			"bookingDate",
 			"classified",
 		])
-		.default("created_at"),
+		.default("createdAt"),
 });
 
 export type CustomersTableSortType = z.infer<typeof CustomersTableSortSchema>;

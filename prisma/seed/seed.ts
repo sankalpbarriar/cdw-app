@@ -3,6 +3,7 @@ import { seedTaxonomy } from "./taxonomy.seed";
 import { seedClassifieds } from "./classified.seed";
 import { seedImages } from "./image.seed";
 import { seedAdmin } from "./admin.seed";
+import { seedCustomers } from "./customer.seed";
 
 const prisma = new PrismaClient();
 
@@ -11,7 +12,8 @@ async function main() {
   // await seedTaxonomy(prisma);
   // await seedClassifieds(prisma);
   // await seedImages(prisma);
-  await seedAdmin(prisma);
+  // await seedAdmin(prisma);
+  await seedCustomers(prisma);
 }
 
 main()

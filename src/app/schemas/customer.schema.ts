@@ -19,3 +19,12 @@ export const CreateCustomerSchema = SubmitDetailsSchema.extend({
 });
 
 export type CreateCustomerType = z.infer<typeof CreateCustomerSchema>;
+export const EditCustomerSchema = z.object({
+	status: z.nativeEnum(CustomerStatus),
+});
+
+export type EditCustomerType = z.infer<typeof EditCustomerSchema>;
+
+export const UpdateCustomerSchema = EditCustomerSchema.extend({
+	id: z.number(),
+});

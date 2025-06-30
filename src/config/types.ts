@@ -1,5 +1,5 @@
 import { UpdateClassifedType } from "@/app/schemas/classified.schema";
-import { Classified, Prisma } from "@prisma/client";
+import { Classified, Customer, Prisma } from "@prisma/client";
 import { ChangeEvent } from "react";
 
 type Params = {
@@ -24,6 +24,11 @@ export type AwaitedPageProps = {
 export type ClassifiedWithImages = Prisma.ClassifiedGetPayload<{
   include: {
     images: true;
+  };
+}>;
+export type CustomerWithClassified = Prisma.CustomerGetPayload<{
+  include: {
+    classified: true;
   };
 }>;
 
@@ -88,4 +93,17 @@ export type ClassifiedKeys = keyof Pick<
   | "colour"
   | "price"
   | "created_at"
+>;
+export type CustomerKeys = keyof Pick<
+  CustomerWithClassified,
+  | "id"
+  | "email"
+  | "mobile"
+  | "firstName"
+  | "lastName"
+  | "updatedAt"
+  | "createdAt"
+  | "status"
+  | "bookingDate"
+  | "classified"
 >;

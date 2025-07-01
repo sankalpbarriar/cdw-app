@@ -1,10 +1,10 @@
 //fully edge compatible database
 import { PrismaClient } from "@prisma/client";
-//creating a prisma that will be used to query the database all over the project
+import { withAccelerate } from "@prisma/extension-accelerate";
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
 function makeClient() {
-  return new PrismaClient()
+  return new PrismaClient().$extends(withAccelerate());
 }
 
 export const prisma = globalForPrisma.prisma || makeClient();

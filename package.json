@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prismagenerate --no-engine"
   },
   "dependencies": {
     "@ai-sdk/google": "^1.2.18",

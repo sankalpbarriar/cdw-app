@@ -73,6 +73,7 @@ export const CreateClassifiedDialog = () => {
             for await (const value of readStreamableValue(
                 responseMessage.classified,
             )) {
+                //@ts-ignore
                 if (value) createForm.reset(value);
             }
         });

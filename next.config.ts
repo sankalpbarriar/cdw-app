@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   experimental:{
     authInterrupts:true,
     // nodeMiddleware:true,
-    optimizeCss:true,
+    optimizeCss:false,
     optimisticClientCache:true,
     optimizePackageImports:["lucide-react","date-fns"],
   },

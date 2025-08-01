@@ -9,7 +9,7 @@ import { NextResponse } from "next/server";
 export const POST = auth(async (req) => {
   try {
     if (!req.auth) {
-      console.error("❌ Forbidden: User not authenticated.");
+      // console.error("❌ Forbidden: User not authenticated.");
       forbidden();
     }
 

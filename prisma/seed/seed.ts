@@ -9,11 +9,11 @@ const prisma = new PrismaClient();
 
 async function main() {
   // await prisma.$executeRaw`TRUNCATE TABLE "classifieds" RESTART IDENTITY CASCADE`;
-  // await seedTaxonomy(prisma);
+  await seedTaxonomy(prisma);
   // await seedClassifieds(prisma);
   // await seedImages(prisma);
-  // await seedAdmin(prisma);
-  await seedCustomers(prisma);
+  await seedAdmin(prisma);
+  // await seedCustomers(prisma);
 }
 
 main()

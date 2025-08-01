@@ -1,27 +1,14 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Mulish, Roboto } from 'next/font/google'
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
+import NextTopLoader from "nextjs-toploader";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 export const metadata: Metadata = {
-  title: "Velocity Motors 🚘 ",
+  title: "Velocity Motors 🚘",
   description: "A car dealer website with AI 🚗",
 };
-import { Toaster } from "@/components/ui/sonner";
-import NextTopLoader from 'nextjs-toploader';
-import { NuqsAdapter } from 'nuqs/adapters/next/app'
-
-const mulish = Mulish({
-  weight: "variable",
-  subsets: ['latin'],
-  variable: "--font-heading",
-  display: "swap"
-})
-const roboto = Roboto({
-  weight: "400",
-  subsets: ['latin'],
-  variable: "--font-body",
-  display: "swap"
-})
 
 export default function RootLayout({
   children,
@@ -30,8 +17,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Load fonts via CDN */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&family=Roboto:wght@400&display=swap"
+          rel="stylesheet"
+        />
+        <style>{`:root {
+          --font-heading: 'Mulish', sans-serif;
+          --font-body: 'Roboto', sans-serif;
+        }`}</style>
+      </head>
       <body
-        className={cn('antialiased overscroll-none bg-background', roboto.variable, mulish.variable)} >
+        style={{
+          fontFamily: "var(--font-body)",
+        }}
+        className={cn("antialiased overscroll-none bg-background")}
+      >
         <NextTopLoader showSpinner={false} />
         <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster />

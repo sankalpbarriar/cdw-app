@@ -1,7 +1,7 @@
 'use client';
 
 import { ClassifiedImages } from "@/config/types";
-import { useCallback, useMemo, useState } from "react";
+import { type JSX , useCallback, useMemo, useState } from "react";
 type ClassifiedImage = ClassifiedImages[number];
 import { type Active, DndContext, type DragEndEvent, KeyboardSensor, PointerSensor, useSensor, useSensors, closestCenter } from "@dnd-kit/core"
 import { arrayMove, sortableKeyboardCoordinates, SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";

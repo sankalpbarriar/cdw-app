@@ -103,7 +103,7 @@ export const config = {
       session.user = {
         id:session.userId,
         email:user.email
-      } as AdapterUser
+      } as AdapterUser & User;
       return session;
     },
   },

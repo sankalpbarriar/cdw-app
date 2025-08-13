@@ -32,6 +32,7 @@
     "@react-email/components": "^0.0.41",
     "@t3-oss/env-nextjs": "^0.12.0",
     "@tailwindcss/oxide": "^4.1.11",
+    "@tailwindcss/oxide-linux-x64-gnu": "^4.1.11",
     "@tinymce/tinymce-react": "^6.2.1",
     "@types/fslightbox-react": "^1.8.0",
     "@types/slug": "^5.0.9",

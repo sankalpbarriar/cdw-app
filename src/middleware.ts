@@ -68,5 +68,5 @@ export const config = {
   //matcher explicitly ignores some of the paths
   matcher:
     "/((?!api/auth|_next/static|_next/image|favicon.ico|manifest.json|logo.svg).*)",
-  runtime: "nodejs",
+  // runtime: "nodejs",
 };

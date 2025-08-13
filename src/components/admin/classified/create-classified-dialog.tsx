@@ -73,6 +73,7 @@ export const CreateClassifiedDialog = () => {
             for await (const value of readStreamableValue(
                 responseMessage.classified,
             )) {
+                //@ts-ignore
                 if (value) createForm.reset(value);
             }
         });
@@ -83,9 +84,9 @@ export const CreateClassifiedDialog = () => {
         startCreateTransition(async () => {
             const result = await createClassifiedAction(data);
             if (!result.success) {
-                console.error("❌ Failed:", result.message);
+                // console.error("❌ Failed:", result.message);
             } else {
-                console.log("✅ Success:", result.message);
+                // console.log("✅ Success:", result.message);
             }
         });
     };
@@ -108,7 +109,7 @@ export const CreateClassifiedDialog = () => {
                             className="space-y-4"
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                console.log("🔥 Manual submit triggered");
+                                // console.log("🔥 Manual submit triggered");
                                 createForm.handleSubmit(onCreateSubmit)(e);
                                 console.log("Form errors", createForm.formState.errors);
                             }}

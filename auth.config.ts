@@ -8,7 +8,7 @@ import { SESSION_MAX_AGE } from "@/config/constants";
 import { routes } from "@/config/routes";
 import { SignInSchema } from "@/app/schemas/auth.schema";
 import { issueChallenge } from "@/lib/opt";
-import { AdapterUser } from "@auth/core/adapters";
+import type { AdapterUser } from "@auth/core/adapters";
 
 export const config = {
   adapter: PrismaAdapter(prisma),

@@ -72,11 +72,11 @@ export const AdminSideBar = () => {
                 <div className="relative h-[60px] w-full">
                     <AnimatePresence initial={false} mode="wait">
                         {isSidebarExpanded ? (
-                            <motion.div key="expanded-logo" className="absolute inset-0" variants={logoVariants} initial='initial' animate='animate' exit='exit' transition={{ diration: 0.4 }}>
+                            <motion.div key="expanded-logo" className="absolute inset-0" variants={logoVariants} initial='initial' animate='animate' exit='exit' transition={{ duration: 0.4 }}>
                                 <Image alt="velocity-motors-logo" src="/logo7.png" fill={true} className="object-contain object-left" />
                             </motion.div>
                         ) : (
-                            <motion.div key="collapsed-logo" className="absolute inset-0" variants={logoVariants} initial='initial' animate='animate' exit='exit' transition={{ diration: 0.1 }}>
+                            <motion.div key="collapsed-logo" className="absolute inset-0" variants={logoVariants} initial='initial' animate='animate' exit='exit' transition={{ duration: 0.1 }}>
                                 <Image alt="velocity-motors-mobile-logo" src="/logo8.png" fill={true} className="object-contain object-left" />
                             </motion.div>
                         )}

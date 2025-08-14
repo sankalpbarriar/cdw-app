@@ -16,7 +16,7 @@ const SignOutButton = () => {
         <Button
             type="submit"
             disabled={pending}
-            className="flex items-center gap-2 bg-blue-500 text-black"
+            className="flex items-center gap-2"
         >
             {pending && <Loader2 className="mr-2 h-4 w-4 animate-spi" />}
             SignOut

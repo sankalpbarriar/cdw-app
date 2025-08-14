@@ -18,7 +18,7 @@ const SignOutButton = () => {
             disabled={pending}
             className="flex items-center gap-2"
         >
-            {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {pending && <Loader2 className="mr-2 h-4 w-4 animate-spi" />}
             SignOut
         </Button>
     )

@@ -1,5 +1,5 @@
 //fully edge compatible database
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client/edge";
 import {withAccelerate} from "@prisma/extension-accelerate";
 //creating a prisma that will be used to query the database all over the project
 const globalForPrisma = global as unknown as { prisma: PrismaClient };

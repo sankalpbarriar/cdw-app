@@ -1,5 +1,5 @@
 import { bcryptPasswordHash } from "@/lib/bcrypt";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client/edge";
 
 export async function seedAdmin(prisma:PrismaClient){
     const password = await bcryptPasswordHash("abc123#");

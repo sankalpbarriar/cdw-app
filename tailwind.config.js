@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require('tailwindcss/colors');
+
 module.exports = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}", // Scan all source files for Tailwind classes
@@ -23,6 +25,7 @@ module.exports = {
         ],
       },
       colors: {
+        ...colors, // Merge Tailwind's default colors
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         border: 'hsl(var(--border))',

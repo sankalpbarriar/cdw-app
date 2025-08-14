@@ -1,12 +1,14 @@
 @import 'tailwindcss';
-
-/* Dark mode variant */
+/*
+  ---break---
+*/
 @custom-variant dark (&:is(.dark *));
 
-/* Theme variables */
 @theme {
   --font-heading: var(--font-heading), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -14,10 +16,10 @@
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
   --color-primary-800: #081a2b;
   --color-primary-900: #040f19;
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
 
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
@@ -47,60 +49,85 @@
   --animate-slide-out: slideOut 0.5s forwards;
 
   @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
   }
   @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
   }
-  @keyframes slideOut {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(-10px); }
-    100% { transform: translateX(100vw); }
+  @keyframes keyframes {
+    slide-out {
+      0% {
+        transform: translateX(0);
+      }
+      50% {
+        transform: translateX(-10px);
+      }
+      100% {
+        transform: translateX(100vw);
+      }
+    }
   }
 }
 
-/* Base styles & variables */
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
 @layer base {
-  :root {
-    --destructive-foreground: 0 0% 100%;
-    --secondary-foreground: 210 20% 10%;
-    --popover-foreground: 210 20% 10%;
-    --primary-foreground: 0 0% 100%;
-    --accent-foreground: 0 0% 100%;
-    --muted-foreground: 210 20% 10%;
-    --card-foreground: 210 20% 10%;
+  	:root {
+		--destructive-foreground: 0 0% 100%;
+		--secondary-foreground: 210 20% 10%;
+		--popover-foreground: 210 20% 10%;
+		--primary-foreground: 0 0% 100%;
+		--accent-foreground: 0 0% 100%;
+		--muted-foreground: 210 20% 10%;
+		--card-foreground: 210 20% 10%;
+		--destructive: 0 80% 60%;
+		--background: 210 20% 96%;
+		--foreground: 210 20% 10%;
+		--secondary: 40 90% 60%;
+		--popover: 210 10% 86%;
+		--primary: 210 70% 50%;
+		--border: 210 10% 59%;
+		--accent: 0 70% 50%;
+		--muted: 210 10% 86%;
+		--input: 210 10% 63%;
+		--card: 210 20% 96%;
+		--ring: 210 70% 50%;
+		--radius: 0.5rem;
+	}
 
-    --destructive: 0 80% 60%;
-    --background: 210 20% 96%;
-    --foreground: 210 20% 10%;
-    --secondary: 40 90% 60%;
-    --popover: 210 10% 86%;
-    --primary: 210 70% 50%;
-    --border: 210 10% 59%;
-    --accent: 0 70% 50%;
-    --muted: 210 10% 86%;
-    --input: 210 10% 63%;
-    --card: 210 20% 96%;
-    --ring: 210 70% 50%;
-    --radius: 0.5rem;
-  }
-
-  * {
-    @apply border-border outline-ring/50;
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
   }
 
   body {
     @apply bg-background text-foreground font-body;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,h2,h3,h4,h5,h6 {
     @apply font-heading;
   }
 }
 
-/* Light & dark defaults */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -112,10 +139,29 @@
   }
 }
 
-/* Custom select styling */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .custom-select {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='gray' viewBox='0 0 24 24'><path d='m7 10l5 5 5-5z'/></svg>") no-repeat right 0px center;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='gray'><path d='m7 10l5 5 5-5z' /> </svg>") no-repeat;
+  background-position: right 0px center;
+}
+
+/*
+  ---break---
+*/
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
